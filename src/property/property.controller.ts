@@ -4,9 +4,12 @@ import {
   Delete,
   Get,
   Param,
+  ParseBoolPipe,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 
 @Controller('property')
@@ -17,7 +20,12 @@ export class PropertyController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('sort', ParseBoolPipe) sort,
+  ) {
+    console.log(typeof id);
+    console.log(typeof sort);
     return `Property with ID: ${id}`;
   }
 
