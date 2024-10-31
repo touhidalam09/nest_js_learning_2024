@@ -37,9 +37,8 @@ export class PropertyController {
   create(
     @Body(
       new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
         groups: ['create'],
+        always: true,
       }),
     )
     body: CreatePropertyDto,
@@ -56,9 +55,8 @@ export class PropertyController {
   partialUpdate(
     @Body(
       new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
         groups: ['update'],
+        always: true,
       }),
     )
     body: CreatePropertyDto,

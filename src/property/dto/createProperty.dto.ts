@@ -6,7 +6,6 @@ export class CreatePropertyDto {
     groups: ['create'],
     message: 'Property name validation failed on length',
   })
-  @Length(2, 10, { groups: ['update'] })
   name: string;
 
   @IsString()
@@ -14,7 +13,7 @@ export class CreatePropertyDto {
   @Length(1, 10, { groups: ['update'] })
   description: string;
 
-  @IsInt({ always: true })
+  @IsInt()
   @IsPositive()
   area: number;
 }
