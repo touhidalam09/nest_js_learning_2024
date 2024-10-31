@@ -11,10 +11,11 @@ import {
   Put,
   Query,
   // UsePipes,
-  ValidationPipe,
+  // ValidationPipe,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
-import { IdParamDto } from './dto/idParam.dto';
+// import { IdParamDto } from './dto/idParam.dto';
+import { ParseIdPipe } from './pipes/parseIdpipe';
 
 @Controller('property')
 export class PropertyController {
@@ -49,7 +50,8 @@ export class PropertyController {
 
   @Patch(':id')
   partialUpdate(
-    @Param() param: IdParamDto,
+    // @Param() Param: IdParamDto,
+    @Param('id', ParseIdPipe) id,
     @Body()
     body: CreatePropertyDto,
   ) {
