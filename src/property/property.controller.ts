@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
@@ -42,12 +43,13 @@ export class PropertyController {
 
   @Post()
   // @UsePipes(new ValidationPipe({ whitelist: true })) //{ whitelist: true, forbidNonWhitelisted: true }
-  @UsePipes(new ZodValidationPipe(CreatePropertySchema))
+  // @UsePipes(new ZodValidationPipe(CreatePropertySchema))
   create(
     @Body()
-    body: CreatePropertyZodDto, // body: CreatePropertyDto,
+    body: CreatePropertyDto, // body: CreatePropertyDto,
+    @Headers() header,
   ) {
-    return body;
+    return header;
   }
 
   @Put()
@@ -56,13 +58,15 @@ export class PropertyController {
   }
 
   @Patch(':id')
+  // @UsePipes(new ZodValidationPipe(CreatePropertySchema))
   partialUpdate(
     // @Param() Param: IdParamDto,
     @Param('id', ParseIdPipe) id,
     @Body()
     body: CreatePropertyDto,
+    @Headers() header,
   ) {
-    return body;
+    return header;
   }
 
   @Delete()
