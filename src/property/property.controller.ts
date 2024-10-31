@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
@@ -11,27 +10,32 @@ import {
   Post,
   Put,
   Query,
-  UsePipes,
   ValidationPipe,
-  // UsePipes,
-  // ValidationPipe,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 // import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
-import { ZodValidationPipe } from './pipes/zodValidationPipe';
-import {
-  CreatePropertySchema,
-  CreatePropertyZodDto,
-} from './dto/createPropertyZod.dto';
+// import { ZodValidationPipe } from './pipes/zodValidationPipe';
+// import {
+//   CreatePropertySchema,
+//   CreatePropertyZodDto,
+// } from './dto/createPropertyZod.dto';
 import { HeaderDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
+import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
+  constructor(private propertyService: PropertyService) {
+    // Don't create your dependency, instead use DI in NestJS
+    // this.propertyService = new PropertyService();
+    // Inverse of Control
+    // this.propertyService = propertyService;
+  }
+
   @Get()
   findAll() {
-    return 'All Properties';
+    return this.propertyService.findAll();
   }
 
   @Get(':id')
@@ -39,9 +43,7 @@ export class PropertyController {
     @Param('id', ParseIntPipe) id: number,
     @Query('sort', ParseBoolPipe) sort: boolean,
   ) {
-    console.log(typeof id);
-    console.log(typeof sort);
-    return `Property with ID: ${id}`;
+    return this.propertyService.findOne(id, sort);
   }
 
   @Post()
@@ -51,12 +53,12 @@ export class PropertyController {
     @Body()
     body: CreatePropertyDto, // body: CreatePropertyDto,
   ) {
-    return body;
+    return this.propertyService.create(body);
   }
 
   @Put()
   update() {
-    return 'This will update a property';
+    return this.propertyService.update(1, 'Update');
   }
 
   @Patch(':id')
@@ -72,11 +74,11 @@ export class PropertyController {
     )
     header: HeaderDto,
   ) {
-    return header;
+    return this.propertyService.partialUpdate(id, header);
   }
 
   @Delete()
   remove() {
-    return 'This will remove a property';
+    return this.propertyService.remove(1);
   }
 }
