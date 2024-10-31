@@ -10,7 +10,10 @@ import {
   Post,
   Put,
   Query,
+  // UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CreatePropertyDto } from './dto/createProperty.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -22,7 +25,7 @@ export class PropertyController {
   @Get(':id')
   findOne(
     @Param('id', ParseIntPipe) id: number,
-    @Query('sort', ParseBoolPipe) sort,
+    @Query('sort', ParseBoolPipe) sort: boolean,
   ) {
     console.log(typeof id);
     console.log(typeof sort);
@@ -30,7 +33,10 @@ export class PropertyController {
   }
 
   @Post()
-  create(@Body() body) {
+  // @UsePipes(new ValidationPipe({ whitelist: true })) //{ whitelist: true, forbidNonWhitelisted: true }
+  create(
+    @Body(new ValidationPipe({ whitelist: true })) body: CreatePropertyDto,
+  ) {
     return body;
   }
 
