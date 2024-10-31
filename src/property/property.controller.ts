@@ -35,7 +35,14 @@ export class PropertyController {
   @Post()
   // @UsePipes(new ValidationPipe({ whitelist: true })) //{ whitelist: true, forbidNonWhitelisted: true }
   create(
-    @Body(new ValidationPipe({ whitelist: true })) body: CreatePropertyDto,
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['create'],
+      }),
+    )
+    body: CreatePropertyDto,
   ) {
     return body;
   }
@@ -45,9 +52,18 @@ export class PropertyController {
     return 'This will update a property';
   }
 
-  @Patch()
-  partialUpdate() {
-    return 'This will update a property partially';
+  @Patch(':id')
+  partialUpdate(
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['update'],
+      }),
+    )
+    body: CreatePropertyDto,
+  ) {
+    return body;
   }
 
   @Delete()
