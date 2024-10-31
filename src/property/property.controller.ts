@@ -26,12 +26,7 @@ import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
-  constructor(private propertyService: PropertyService) {
-    // Don't create your dependency, instead use DI in NestJS
-    // this.propertyService = new PropertyService();
-    // Inverse of Control
-    // this.propertyService = propertyService;
-  }
+  constructor(private propertyService: PropertyService) {}
 
   @Get()
   findAll() {
