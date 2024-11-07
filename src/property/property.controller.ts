@@ -4,25 +4,15 @@ import {
   Delete,
   Get,
   Param,
-  ParseBoolPipe,
   ParseIntPipe,
   Patch,
   Post,
-  Put,
-  Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 // import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
-// import { ZodValidationPipe } from './pipes/zodValidationPipe';
-// import {
-//   CreatePropertySchema,
-//   CreatePropertyZodDto,
-// } from './dto/createPropertyZod.dto';
-import { HeaderDto } from './dto/headers.dto';
-import { RequestHeader } from './pipes/request-header';
 import { PropertyService } from './property.service';
+import { UpdatePropertyDto } from './dto/updateProperty.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -34,46 +24,28 @@ export class PropertyController {
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', ParseIntPipe) id: number,
-    @Query('sort', ParseBoolPipe) sort: boolean,
-  ) {
-    return this.propertyService.findOne(id, sort);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.propertyService.findOne(id);
   }
 
   @Post()
-  // @UsePipes(new ValidationPipe({ whitelist: true })) //{ whitelist: true, forbidNonWhitelisted: true }
-  // @UsePipes(new ZodValidationPipe(CreatePropertySchema))
   create(
     @Body()
-    body: CreatePropertyDto, // body: CreatePropertyDto,
+    dto: CreatePropertyDto, // body: CreatePropertyDto,
   ) {
-    return this.propertyService.create(body);
+    return this.propertyService.create(dto);
   }
-
-  @Put()
-  update() {
-    return this.propertyService.update(1, 'Update');
-  }
-
   @Patch(':id')
-  // @UsePipes(new ZodValidationPipe(CreatePropertySchema))
-  partialUpdate(
-    // @Param() Param: IdParamDto,
+  update(
     @Param('id', ParseIdPipe) id,
     @Body()
-    body: CreatePropertyDto,
-    // @Headers() header: HeaderDto,
-    @RequestHeader(
-      new ValidationPipe({ whitelist: true, validateCustomDecorators: true }),
-    )
-    header: HeaderDto,
+    body: UpdatePropertyDto,
   ) {
-    return this.propertyService.partialUpdate(id, header);
+    return this.propertyService.update(id, body);
   }
 
-  @Delete()
-  remove() {
-    return this.propertyService.remove(1);
+  @Delete(':id')
+  remove(@Param('id', ParseIdPipe) id) {
+    return this.propertyService.remove(id);
   }
 }
