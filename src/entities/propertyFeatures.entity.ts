@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Property } from './property.entity';
 
@@ -32,6 +34,12 @@ export class PropertyFeature {
 
   @Column()
   hasSwimmingPool: boolean;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToOne(() => Property, (property) => property.PropertyFeature)
   @JoinColumn()
