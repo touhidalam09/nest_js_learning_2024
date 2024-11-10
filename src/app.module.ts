@@ -3,10 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PropertyModule } from './property/property.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { pgConfig } from 'dbConfig';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { typeOrmConfig } from './config/database.config';
 
 @Module({
-  imports: [PropertyModule, TypeOrmModule.forRoot(pgConfig)],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Make ConfigModule globally available
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: typeOrmConfig,
+    }),
+    PropertyModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
